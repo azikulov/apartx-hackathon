@@ -1,0 +1,15 @@
+.card {
+  @apply transition hover:bg-[#5774CD] cursor-pointer;
+}
+
+.card img {
+  @apply opacity-0 transition;
+}
+
+.card:hover img {
+  @apply opacity-100;
+}
+
+.card:hover p {
+  @apply text-white;
+}
