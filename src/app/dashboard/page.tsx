@@ -9,12 +9,11 @@ import { Row } from '@/components/shared/Row';
 import { Table } from '@/components/shared/Table';
 import { Sidebar } from '@/components/ui/Sidebar';
 import { Card } from '@/components/ui/Card';
-import { DashboardSwitcher } from '@/types';
-import { Modal } from '@/components/shared/Modal';
-import { Input } from '@/components/shared/Input';
-import { Button } from '@/components/shared/Button';
+import type { DashboardSwitcher } from '@/types';
+import { CreateOrderModal } from '@/modals/CreateOrder';
 
 export default function Dashboard() {
+  const [isOpenCreateOrder, setIsOpenCreateOrder] = useState(false);
   const [switcher, setSwitcher] = useState<DashboardSwitcher>('active');
 
   function updateSwitcher(value: DashboardSwitcher) {
@@ -101,7 +100,10 @@ export default function Dashboard() {
             </li>
           </ul>
 
-          <button className='flex items-center justify-center gap-x-2 py-2 px-6 rounded-xl bg-[#5774CD]'>
+          <button
+            onClick={() => setIsOpenCreateOrder(true)}
+            className='flex items-center justify-center gap-x-2 py-2 px-6 rounded-xl bg-[#5774CD]'
+          >
             <span className='text-white font-bold text-xs'>Создать заказ</span>
             <PlusSvg className='w-5 h-5 flex-shrink-0' />
           </button>
@@ -357,33 +359,9 @@ export default function Dashboard() {
         )}
       </main>
 
-      <CreateOrderModal />
+      {isOpenCreateOrder && (
+        <CreateOrderModal onClose={() => setIsOpenCreateOrder(false)} />
+      )}
     </div>
-  );
-}
-
-function CreateOrderModal() {
-  return (
-    <Modal title='Создать заказ'>
-      <Input label='Услуга' placeholder='Введите вашу услугу' type='text' />
-
-      <Input
-        label='Стоимость'
-        placeholder='Введите вашу стоимость'
-        type='tel'
-      />
-
-      {/* Date */}
-      {/* <Input
-          label='Номер телефона'
-          placeholder='Введите ваш номер телефона'
-          type='tel'
-        /> */}
-      <button
-        className={`w-full mt-6 flex justify-center items-center gap-x-6 rounded-xl py-4 px-[2rem] bg-[#5774CD]`}
-      >
-        <span className='text-white text-sm font-bold'>Создать</span>
-      </button>
-    </Modal>
   );
 }

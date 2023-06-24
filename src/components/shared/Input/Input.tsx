@@ -5,7 +5,13 @@ import type { ChangeEvent } from 'react';
 import { ImageSvg } from '@/assets/icons/ImageSvg';
 import type { InputProps } from './types';
 
-export function Input({ label, placeholder, type }: InputProps) {
+export function Input({
+  label,
+  placeholder,
+  type,
+  onChange,
+  ...rest
+}: InputProps) {
   const [image, setImage] = useState<string | null>(null);
 
   function handleSelectImage(event: ChangeEvent<HTMLInputElement>) {
@@ -51,9 +57,15 @@ export function Input({ label, placeholder, type }: InputProps) {
 
           <p className='text-[#2D2F37] text-sm'>{placeholder}</p>
           <input
+            {...rest}
             type='file'
             accept='image/*'
-            onChange={handleSelectImage}
+            onChange={(e) => {
+              if (onChange) {
+                onChange(e);
+              }
+              handleSelectImage(e);
+            }}
             hidden
             id={label}
           />
@@ -69,7 +81,9 @@ export function Input({ label, placeholder, type }: InputProps) {
       </label>
 
       <input
+        {...rest}
         id={label}
+        onChange={onChange}
         className='mt-[0.625rem] py-3 px-[1.125rem] text-sm text-[#2D2F37] outline-none rounded border border-[#DFDFDF] focus:border-[#5774CD]'
         type={type}
         placeholder={placeholder}

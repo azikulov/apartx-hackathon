@@ -1,19 +1,22 @@
-import { Inter } from "next/font/google";
+import { Inter } from 'next/font/google';
 
-import { IChild } from "@/types";
-import "./globals.css";
+import { ModalsProvider } from '@/context/modals';
+import { IChild } from '@/types';
+import './globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: "ApartX Cleaing",
-  description: "ApartX Cleaning",
+  title: 'ApartX Cleaing',
+  description: 'ApartX Cleaning',
 };
 
 export default function RootLayout({ children }: IChild) {
   return (
-    <html lang="kk">
-      <body className={inter.className}>{children}</body>
+    <html lang='kk'>
+      <body className={inter.className}>
+        <ModalsProvider>{children}</ModalsProvider>
+      </body>
     </html>
   );
 }

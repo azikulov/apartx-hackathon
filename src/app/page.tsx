@@ -1,13 +1,37 @@
-import { ArrowRightSvg } from '@/assets/icons/ArrowRightSvg';
-import { LogoSvg } from '@/assets/icons/LogoSvg';
-import { Button } from '@/components/shared/Button';
-import { Column } from '@/components/shared/Column';
-import { Input } from '@/components/shared/Input';
-import { Modal } from '@/components/shared/Modal';
-import { Pin } from '@/components/shared/Pin';
+'use client';
 import Image from 'next/image';
+import axios from 'axios';
+
+import { LogoSvg } from '@/assets/icons';
+import { Button } from '@/components/shared/Button';
+import { AuthenticationModal } from '@/modals/Authentication';
+import { useModalsContext } from '@/context/modals';
+import { RegistrationModal } from '@/modals/Registration';
+import { AuthenticationConfirmCodeModal } from '@/modals/AuthenticationConfirmCode';
+import { RegistrationConfirmCodeModal } from '@/modals/RegistrationConfirmCode';
+import type { Registration } from '@/types';
 
 export default function HomeScreen() {
+  const { modals, updateModal } = useModalsContext();
+
+  function handleSubmitAuthentication() {
+    updateModal({ key: 'authentication', value: false });
+    updateModal({ key: 'authenticationConfirmCode', value: true });
+  }
+
+  function handleSubmitAuthenticationConfirmCode() {
+    updateModal({ key: 'authenticationConfirmCode', value: false });
+  }
+
+  function handleSubmitRegistration() {
+    updateModal({ key: 'registration', value: false });
+    updateModal({ key: 'registrationConfirmCode', value: true });
+  }
+
+  function handleSubmitRegistrationConfirmCode() {
+    updateModal({ key: 'registrationConfirmCode', value: false });
+  }
+
   return (
     <div className='grid grid-cols-2 h-full'>
       <div className='rounded-r-[2rem] grid place-items-center bg-[#E1E9FF]'>
@@ -43,81 +67,45 @@ export default function HomeScreen() {
             ключ к безмятежному и роскошному пребыванию
           </p>
 
-          <Button>Присоединиться</Button>
+          <Button
+            onClick={() => updateModal({ key: 'authentication', value: true })}
+          >
+            Присоединиться
+          </Button>
         </main>
       </div>
 
-      {/* <VerificationModal /> */}
+      {modals.authentication && (
+        <AuthenticationModal
+          onClickButton={handleSubmitAuthentication}
+          onClose={() => updateModal({ key: 'authentication', value: false })}
+        />
+      )}
+
+      {modals.authenticationConfirmCode && (
+        <AuthenticationConfirmCodeModal
+          onClickButton={handleSubmitAuthenticationConfirmCode}
+          onClose={() =>
+            updateModal({ key: 'authenticationConfirmCode', value: false })
+          }
+        />
+      )}
+
+      {modals.registration && (
+        <RegistrationModal
+          onClickButton={handleSubmitRegistration}
+          onClose={() => updateModal({ key: 'registration', value: false })}
+        />
+      )}
+
+      {modals.registrationConfirmCode && (
+        <RegistrationConfirmCodeModal
+          onClickButton={handleSubmitRegistrationConfirmCode}
+          onClose={() =>
+            updateModal({ key: 'registrationConfirmCode', value: false })
+          }
+        />
+      )}
     </div>
-  );
-}
-
-function VerificationModal() {
-  return (
-    <Modal
-      title='Введите код для подтверждения'
-      subtitle='На вашу почту пришел код, впишите его пожалуйста, для подтверждения регистрации'
-    >
-      <Pin />
-
-      <Button className='w-full'>Продолжить</Button>
-    </Modal>
-  );
-}
-
-function CodeModal() {
-  return (
-    <Modal
-      title='Введите код'
-      subtitle='На вашу почту пришел код, впишите его пожалуйста, для авторизации'
-    >
-      <Pin />
-
-      <Button className='w-full'>Продолжить</Button>
-    </Modal>
-  );
-}
-
-function RegistrationModal() {
-  return (
-    <Modal title='Регистрация'>
-      <Input label='Ваш E-mail' placeholder='Введите ваш E-mail' type='email' />
-
-      <Column>
-        <Input label='Имя' placeholder='Введите ваше имя' type='text' />
-        <Input label='Фамилия' placeholder='Введите ваше фамилие' type='text' />
-      </Column>
-
-      <Input
-        label='Номер телефона'
-        placeholder='Введите ваш номер телефона'
-        type='tel'
-      />
-
-      <Input
-        label='Ваше изображение'
-        placeholder='Максимальный размер фотографии 4мб, формат PNG/JPEG/JPG.'
-        type='image'
-      />
-
-      <Button className='w-full'>Продолжить</Button>
-    </Modal>
-  );
-}
-
-function AuthenticationModal() {
-  return (
-    <Modal title='Авторизация'>
-      <Input label='Ваш E-mail' placeholder='Введите ваш E-mail' type='email' />
-
-      <Button className='w-full'>Продолжить</Button>
-
-      <p className='mt-6 text-center text-sm text-[#2D2F37]'>
-        <span>У вас нету аккаунта? </span>
-        <a href='#' className='font-medium text-[#5774CD]'>
-          Зарегистрируйтесь
-        </a>
-      </p>
-    </Modal>
   );
 }
