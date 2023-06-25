@@ -9,6 +9,7 @@ import './globals.css';
 import { useUserDataStore } from '@/store/useUserDataStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useRouter } from 'next/navigation';
+import { refreshToken } from '@/api/token';
 
 const inter = Inter({ subsets: ['cyrillic', 'latin'] });
 
@@ -22,6 +23,12 @@ export default function RootLayout({ children }: IChild) {
     if (!isAuth) return router.push('/');
 
     if (isAuth) {
+      const token = JSON.parse(localStorage.getItem('token') as string);
+
+      refreshToken(token.refresh).catch(() => {
+        router.push('/');
+      });
+
       getUserData().then((response) => {
         updateUser(response?.data);
       });

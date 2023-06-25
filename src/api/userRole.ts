@@ -4,15 +4,11 @@ import { refreshToken } from './token';
 
 export async function getUserRole(accessToken: string) {
   try {
-    const response = await axios.patch(
-      API_URL + 'select-role/',
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await axios.get(API_URL + 'select-role/', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     return response.data;
   } catch (e) {
