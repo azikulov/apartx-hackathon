@@ -92,7 +92,7 @@ export default function ProfileScreen() {
             </div>
           </Column>
         ) : (
-          <Column className='grid-cols-1 gap-x-0'>
+          <div className='grid grid-cols-1'>
             <Table
               header={
                 <Column className='grid-cols-[0.5fr_1fr_0.5fr_0.5fr] py-6'>
@@ -164,7 +164,7 @@ export default function ProfileScreen() {
                 </Row>
               }
             />
-          </Column>
+          </div>
         )}
       </main>
     </div>

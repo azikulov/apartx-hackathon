@@ -30,10 +30,8 @@ export function RegistrationConfirmCodeModal({
       );
 
       if (response.status === 201) {
-        if (sessionStorage) {
-          sessionStorage.setItem('isAuth', 'true');
-          sessionStorage.setItem('token', JSON.stringify(response.data.token));
-        }
+        sessionStorage.setItem('isAuth', 'true');
+        sessionStorage.setItem('token', JSON.stringify(response.data.token));
 
         router.push('/choosing-role');
 

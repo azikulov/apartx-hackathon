@@ -13,8 +13,6 @@ export const useAuthStore = create<State & Action>((set) => ({
   updateAuth: (isAuth) => {
     set({ isAuth });
 
-    if (sessionStorage) {
-      sessionStorage.setItem('isAuth', String(isAuth));
-    }
+    sessionStorage.setItem('isAuth', String(isAuth));
   },
 }));

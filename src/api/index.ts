@@ -1,1 +1,1 @@
-export const API_URL = 'https://redigo.serveo.net/';
+export const API_URL = 'https://autem.serveo.net/';

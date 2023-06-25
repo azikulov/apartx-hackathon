@@ -15,15 +15,11 @@ export async function refreshToken(refresh: string): Promise<RefreshToken> {
   try {
     const response = await axios.post(API_URL + 'token/refresh/', { refresh });
 
-    if (sessionStorage) {
-      sessionStorage.setItem('token', JSON.stringify(response.data));
-    }
+    sessionStorage.setItem('token', JSON.stringify(response.data));
 
     return response.data;
   } catch (e) {
-    if (sessionStorage) {
-      sessionStorage.removeItem('token');
-      sessionStorage.removeItem('isAuth');
-    }
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('isAuth');
   }
 }

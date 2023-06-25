@@ -28,10 +28,8 @@ export function AuthenticationConfirmCodeModal({
       const response = await axios.post(API_URL + 'confirm-login/', formData);
 
       if (response.status === 200) {
-        if (sessionStorage) {
-          sessionStorage.setItem('isAuth', 'true');
-          sessionStorage.setItem('token', JSON.stringify(response.data.token));
-        }
+        sessionStorage.setItem('isAuth', 'true');
+        sessionStorage.setItem('token', JSON.stringify(response.data.token));
 
         const userRole = await getUserRole(response.data.token.access);
 
