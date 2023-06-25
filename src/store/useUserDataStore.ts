@@ -25,3 +25,12 @@ export const useUserDataStore = create<State & Action>((set) => ({
     set((store) => ({ ...store, ...data }));
   },
 }));
+
+// .CodeMirror-sizer {
+//   max-width: max-content !important;
+// }
+
+// span[role="presentation"] {
+//   display: flex;
+//   flex-wrap: wrap;
+// }

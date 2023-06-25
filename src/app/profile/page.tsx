@@ -11,8 +11,15 @@ import { Table } from '@/components/shared/Table';
 import { CalendarSvg } from '@/assets/icons';
 import { Row } from '@/components/shared/Row';
 import { FilledStarSvg } from '@/assets/icons/FilledStarSvg';
+import { useUserDataStore } from '@/store/useUserDataStore';
+import { API_URL } from '@/api';
+import { useUserRatesStore } from '@/store/useUserRatesStore';
 
 export default function ProfileScreen() {
+  const { avatar, first_name, last_name, phone_number, email } =
+    useUserDataStore();
+  const { rates } = useUserRatesStore();
+
   const [switcher, setSwitcher] = useState<'profile' | 'rates'>('profile');
 
   function updateSwitcher(value: 'profile' | 'rates') {
@@ -61,15 +68,31 @@ export default function ProfileScreen() {
         {switcher === 'profile' ? (
           <Column className='grid-cols-[1fr_0.75fr] gap-x-16'>
             <div>
-              <Input label='Имя' placeholder='Ваше имя' type='text' />
-              <Input label='Фамилия' placeholder='Ваше фамилия' type='text' />
+              <Input
+                label='Имя'
+                defaultValue={first_name}
+                disabled
+                placeholder='Ваше имя'
+                type='text'
+              />
+              <Input
+                label='Фамилия'
+                defaultValue={last_name}
+                disabled
+                placeholder='Ваше фамилия'
+                type='text'
+              />
               <Input
                 label='Электронная почта'
+                defaultValue={email}
+                disabled
                 placeholder='Ваша почта'
                 type='text'
               />
               <Input
                 label='Номер телефона'
+                defaultValue={phone_number}
+                disabled
                 placeholder='Ваш номер телефона'
                 type='text'
               />
@@ -83,11 +106,12 @@ export default function ProfileScreen() {
                 <EditingSvg className='w-[1.125rem] h-[1.125rem] flex-shrink-0' />
               </button>
             </div>
-            <div className=''>
-              <Image
-                src={require('@/assets/images/dashboard/ava.png')}
+            <div className='mt-6'>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={API_URL + (avatar as string)}
                 alt=''
-                className='w-40 h-40 rounded-full'
+                className='w-40 h-40 rounded-full object-contain border'
               />
             </div>
           </Column>
@@ -115,52 +139,53 @@ export default function ProfileScreen() {
               }
               content={
                 <Row className='gap-y-5'>
-                  <Column className='grid-cols-[0.5fr_1fr_0.5fr_0.5fr]  bg-white px-5 py-4 rounded-xl'>
-                    <div>
-                      <div className='flex items-center gap-x-3'>
-                        <Image
-                          src={require('@/assets/images/dashboard/ava.png')}
-                          alt=''
-                          className='w-[2rem] h-[2rem] flex-shrink-0'
-                        />
-                        <span className='text-[#2D2F37] text-sm font-medium'>
-                          Алтай
-                        </span>
-                      </div>
-                    </div>
+                  {rates &&
+                    rates.map((rate, index) => (
+                      <Column
+                        key={rate.id}
+                        className='grid-cols-[0.5fr_1fr_0.5fr_0.5fr]  bg-white px-5 py-4 rounded-xl'
+                      >
+                        <div>
+                          <div className='flex items-center gap-x-3'>
+                            <Image
+                              src={require('@/assets/images/dashboard/ava.png')}
+                              alt=''
+                              className='w-[2rem] h-[2rem] flex-shrink-0'
+                            />
+                            <span className='text-[#2D2F37] text-sm font-medium'>
+                              Алтай
+                            </span>
+                          </div>
+                        </div>
 
-                    <div>
-                      <span className='text-[#2D2F37] font-medium'>
-                        Хочу поблагодарить хоста по имени Максим за прекрасное
-                        гостеприимство. Его квартира всегда была в идеальном
-                        порядке, чистая и уютная. Максим всегда был готов помочь
-                        и отвечал на все наши вопросы. Он создал прекрасные
-                        условия для нашего комфортного пребывания. Большое
-                        спасибо
-                      </span>
-                    </div>
+                        <div>
+                          <span className='text-[#2D2F37] font-medium'>
+                            {rate.review_text}
+                          </span>
+                        </div>
 
-                    <div>
-                      <span className='text-[#2D2F37] font-medium flex items-center gap-x-1'>
-                        <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
-                        <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
-                        <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
-                        <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
-                        <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
+                        <div>
+                          <span className='text-[#2D2F37] font-medium flex items-center gap-x-1'>
+                            <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
+                            <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
+                            <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
+                            <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
+                            <FilledStarSvg className='w-5 h-5 flex-shrink-0' />
 
-                        <span className='ml-1'>5.0</span>
-                      </span>
-                    </div>
+                            <span className='ml-1'>5.0</span>
+                          </span>
+                        </div>
 
-                    <div>
-                      <div className='flex items-center gap-x-3'>
-                        <CalendarSvg className='w-[1.125rem] h-[1.125rem] flex-shrink-0' />
-                        <span className='text-[#2D2F37] text-sm'>
-                          25.06.2023, 18:00
-                        </span>
-                      </div>
-                    </div>
-                  </Column>
+                        <div>
+                          <div className='flex items-center gap-x-3'>
+                            <CalendarSvg className='w-[1.125rem] h-[1.125rem] flex-shrink-0' />
+                            <span className='text-[#2D2F37] text-sm'>
+                              25.06.2023, 18:00
+                            </span>
+                          </div>
+                        </div>
+                      </Column>
+                    ))}
                 </Row>
               }
             />

@@ -10,11 +10,14 @@ import { useUserDataStore } from '@/store/useUserDataStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { usePathname, useRouter } from 'next/navigation';
 import { refreshToken } from '@/api/token';
+import { getUserRates } from '@/api/userRates';
+import { useUserRatesStore } from '@/store/useUserRatesStore';
 
 const inter = Inter({ subsets: ['cyrillic', 'latin'] });
 
 export default function RootLayout({ children }: IChild) {
   const { updateUser } = useUserDataStore();
+  const { updateUserRates } = useUserRatesStore();
   const { isAuth } = useAuthStore();
 
   const router = useRouter();
@@ -33,8 +36,12 @@ export default function RootLayout({ children }: IChild) {
       getUserData().then((response) => {
         updateUser(response?.data);
       });
+
+      getUserRates().then((response) => {
+        updateUserRates({ rates: response?.data });
+      });
     }
-  }, [updateUser, isAuth, router, pathname]);
+  }, [updateUser, isAuth, router, pathname, updateUserRates]);
 
   return (
     <html lang='kk'>
