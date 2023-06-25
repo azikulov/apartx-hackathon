@@ -23,7 +23,7 @@ export default function RootLayout({ children }: IChild) {
     if (!isAuth) return router.push('/');
 
     if (isAuth) {
-      const token = JSON.parse(localStorage.getItem('token') as string);
+      const token = JSON.parse(sessionStorage.getItem('token') as string);
 
       refreshToken(token.refresh).catch(() => {
         router.push('/');

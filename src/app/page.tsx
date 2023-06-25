@@ -70,7 +70,7 @@ export default function HomeScreen() {
 
           <Button
             onClick={() => {
-              if (Boolean(localStorage.getItem('isAuth'))) {
+              if (Boolean(sessionStorage.getItem('isAuth'))) {
                 return router.push('/dashboard');
               }
               return updateModal({ key: 'authentication', value: true });

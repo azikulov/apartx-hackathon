@@ -1,6 +1,5 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
 import axios from 'axios';
 
 import { Button } from '@/components/shared/Button';
@@ -31,8 +30,10 @@ export function RegistrationConfirmCodeModal({
       );
 
       if (response.status === 201) {
-        localStorage.setItem('isAuth', 'true');
-        localStorage.setItem('token', JSON.stringify(response.data.token));
+        if (sessionStorage) {
+          sessionStorage.setItem('isAuth', 'true');
+          sessionStorage.setItem('token', JSON.stringify(response.data.token));
+        }
 
         router.push('/choosing-role');
 

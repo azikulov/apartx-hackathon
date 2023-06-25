@@ -3,8 +3,6 @@ import { useState } from 'react';
 import cx from 'classnames';
 
 import { Sidebar } from '@/components/ui/Sidebar';
-import { Input } from '@/components/shared/Input';
-import { EditingSvg } from '@/assets/icons/EditingSvg';
 import { Column } from '@/components/shared/Column';
 import Image from 'next/image';
 import { Table } from '@/components/shared/Table';

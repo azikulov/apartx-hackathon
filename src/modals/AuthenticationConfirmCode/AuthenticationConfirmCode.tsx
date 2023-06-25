@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLocalStorage } from 'usehooks-ts';
 
 import { Button } from '@/components/shared/Button';
 import { Modal } from '@/components/shared/Modal';
@@ -29,8 +28,10 @@ export function AuthenticationConfirmCodeModal({
       const response = await axios.post(API_URL + 'confirm-login/', formData);
 
       if (response.status === 200) {
-        localStorage.setItem('isAuth', 'true');
-        localStorage.setItem('token', JSON.stringify(response.data.token));
+        if (sessionStorage) {
+          sessionStorage.setItem('isAuth', 'true');
+          sessionStorage.setItem('token', JSON.stringify(response.data.token));
+        }
 
         const userRole = await getUserRole(response.data.token.access);
 
