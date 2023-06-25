@@ -15,7 +15,7 @@ import { ConfirmExitModal } from '@/modals/ConfirmExit';
 import { useUserDataStore } from '@/store/useUserDataStore';
 import { updateUserRole } from '@/api/userRole';
 import { FilledUserSvg } from '@/assets/icons/FilledUserSvg';
-import { OutlineClipboardSvg } from '@/assets/icons/OutlineClipboardSvg';
+import { OutlineClipboardSvg } from '@/assets/icons/FilledClipboardSvg';
 import { ExecutorSvg } from '@/assets/icons/ExecutorSvg';
 import { FilledExecutorSvg } from '@/assets/icons/FilledExecutorSvg';
 
