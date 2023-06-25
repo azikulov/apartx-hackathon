@@ -111,7 +111,7 @@ export function Sidebar() {
         </Link>
 
         <Link
-          href='#'
+          href='/chat'
           className='px-[2rem] py-4 flex items-center rounded-lg gap-x-3'
         >
           <ChatSvg className='text-[#2D2F37] h-6 w-[1.125rem]' />
