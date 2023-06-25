@@ -4,7 +4,7 @@ import { Registration } from '@/types';
 type State = { state: Registration };
 type Action = { updateState: (data: Registration) => void };
 
-export const useAuthenticationStore = create<State & Action>((set) => ({
+export const useUserStore = create<State & Action>((set) => ({
   state: {},
   updateState: (data) => {
     set((store) => ({ state: { ...store.state, ...data } }));

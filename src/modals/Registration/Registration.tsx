@@ -1,24 +1,29 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 import { Button } from '@/components/shared/Button';
 import { Column } from '@/components/shared/Column';
 import { Input } from '@/components/shared/Input';
 import { Modal } from '@/components/shared/Modal';
+import { useUserStore } from '@/store/useUserStore';
+import type { Registration } from '@/types';
 import type { RegistrationProps } from './types';
-import axios from 'axios';
-import { useAuthenticationStore } from '@/store/useAuthenticationStore';
-import { Registration } from '@/types';
+import { API_URL } from '@/api';
 
 export function RegistrationModal({
   onClose,
   onClickButton,
 }: RegistrationProps) {
   const [formData, setFormData] = useState<Registration>({});
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+
   const form = new FormData();
-  const { updateState } = useAuthenticationStore();
+  const { updateState } = useUserStore();
 
   async function handleSubmit() {
-    const API_URL = 'https://f037-217-196-25-57.ngrok-free.app/';
+    setIsLoading(true);
+    setIsError(false);
 
     form.append('email', formData.email as string);
     form.append('first_name', formData.first_name as string);
@@ -30,11 +35,14 @@ export function RegistrationModal({
       const response = await axios.post(API_URL + 'request-register/', form);
 
       if (response.status === 200) {
+        setIsError(false);
         updateState({ email: form.get('email') as string });
         onClickButton();
       }
     } catch (error) {
-      console.log(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -57,14 +65,16 @@ export function RegistrationModal({
           label='Имя'
           placeholder='Введите ваше имя'
           type='text'
+          errorMessage='Вы не ввели ваше имя!'
         />
         <Input
           onChange={(e) =>
             setFormData((prev) => ({ ...prev, last_name: e.target.value }))
           }
           label='Фамилия'
-          placeholder='Введите ваше фамилие'
+          placeholder='Введите вашу фамилию'
           type='text'
+          errorMessage='Вы не ввели вашу фамилию!'
         />
       </Column>
 
@@ -75,6 +85,7 @@ export function RegistrationModal({
         label='Номер телефона'
         placeholder='Введите ваш номер телефона'
         type='tel'
+        errorMessage='Вы не ввели ваш номер телефона!'
       />
 
       <Input
@@ -84,6 +95,7 @@ export function RegistrationModal({
         label='Пароль'
         placeholder='Введите ваш пароль'
         type='password'
+        errorMessage='Вы не ввели ваш пароль!'
       />
 
       <Input
@@ -95,7 +107,13 @@ export function RegistrationModal({
         type='image'
       />
 
-      <Button type='submit' onClick={handleSubmit} className='w-full'>
+      <Button
+        isError={isError}
+        disabled={isLoading}
+        type='submit'
+        onClick={handleSubmit}
+        className='w-full'
+      >
         Продолжить
       </Button>
     </Modal>

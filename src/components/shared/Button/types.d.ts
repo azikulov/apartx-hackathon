@@ -9,4 +9,6 @@ export interface ButtonProps
     DetailedHTMLProps<
       ButtonHTMLAttributes<HTMLButtonElement>,
       HTMLButtonElement
-    > {}
+    > {
+  isError?: boolean;
+}

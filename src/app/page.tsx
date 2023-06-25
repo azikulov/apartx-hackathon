@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 import { LogoSvg } from '@/assets/icons';
 import { Button } from '@/components/shared/Button';
@@ -9,9 +9,10 @@ import { useModalsContext } from '@/context/modals';
 import { RegistrationModal } from '@/modals/Registration';
 import { AuthenticationConfirmCodeModal } from '@/modals/AuthenticationConfirmCode';
 import { RegistrationConfirmCodeModal } from '@/modals/RegistrationConfirmCode';
-import type { Registration } from '@/types';
 
 export default function HomeScreen() {
+  const router = useRouter();
+
   const { modals, updateModal } = useModalsContext();
 
   function handleSubmitAuthentication() {
@@ -68,7 +69,12 @@ export default function HomeScreen() {
           </p>
 
           <Button
-            onClick={() => updateModal({ key: 'authentication', value: true })}
+            onClick={() => {
+              if (Boolean(localStorage.getItem('isAuth'))) {
+                return router.push('/dashboard');
+              }
+              return updateModal({ key: 'authentication', value: true });
+            }}
           >
             Присоединиться
           </Button>

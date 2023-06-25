@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import type { ChangeEvent } from 'react';
+import cx from 'classnames';
 
 import { ImageSvg } from '@/assets/icons/ImageSvg';
 import type { InputProps } from './types';
@@ -10,9 +11,11 @@ export function Input({
   placeholder,
   type,
   onChange,
+  errorMessage,
   ...rest
 }: InputProps) {
   const [image, setImage] = useState<string | null>(null);
+  const [isEmptyField, setIsEmptyField] = useState<boolean>(false);
 
   function handleSelectImage(event: ChangeEvent<HTMLInputElement>) {
     const file = event.currentTarget.files;
@@ -25,6 +28,17 @@ export function Input({
         setImage(reader.result as string);
       };
     }
+  }
+
+  function handleChangeInput(e: ChangeEvent<HTMLInputElement>) {
+    if (onChange) {
+      onChange(e);
+    }
+    if (e.target.value === '') {
+      return setIsEmptyField(true);
+    }
+
+    return setIsEmptyField(false);
   }
 
   if (type === 'image') {
@@ -83,11 +97,18 @@ export function Input({
       <input
         {...rest}
         id={label}
-        onChange={onChange}
-        className='mt-[0.625rem] py-3 px-[1.125rem] text-sm text-[#2D2F37] outline-none rounded border border-[#DFDFDF] focus:border-[#5774CD]'
+        onChange={handleChangeInput}
+        className={cx(
+          'mt-[0.625rem] py-3 px-[1.125rem] text-sm text-[#2D2F37] outline-none rounded border border-[#DFDFDF] focus:border-[#5774CD]',
+          { 'border-[#ef233c]': isEmptyField }
+        )}
         type={type}
         placeholder={placeholder}
       />
+
+      {errorMessage && isEmptyField && (
+        <p className='text-sm mt-2 text-[#ef233c]'>{errorMessage}</p>
+      )}
     </div>
   );
 }

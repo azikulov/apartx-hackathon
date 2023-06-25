@@ -26,9 +26,11 @@ export default function Dashboard() {
 
       <main className='pt-[2rem] px-10 w-full bg-[#fcfcff]'>
         <div className='flex justify-between items-center'>
-          <h1 className='text-[#2D2F37] text-[1.75rem]'>Список заказов</h1>
+          <h1 className='text-[#2D2F37] font-medium text-[1.75rem]'>
+            Список заказов
+          </h1>
 
-          <ul
+          <div
             className={cx(`flex items-center justify-center border rounded`, {
               'border-[#5774CD]': switcher === 'active',
               'border-[#57CD63]': switcher === 'completed',
@@ -36,69 +38,62 @@ export default function Dashboard() {
               'border-[#B5CD57]': switcher === 'at work',
             })}
           >
-            <li>
-              <button
-                className={cx(
-                  'transition duration-200 py-2 px-4 text-xs text-[#2D2F37]',
-                  {
-                    'bg-[#5774CD] text-white font-medium':
-                      switcher === 'active',
-                  }
-                )}
-                onClick={updateSwitcher('active')}
-              >
-                Активные (4)
-              </button>
-            </li>
-            <li>
-              <button
-                className={cx(
-                  'transition duration-200 py-2 px-4 text-xs border-l text-[#2D2F37]',
-                  {
-                    'bg-[#B5CD57] border-[#B5CD57] text-white font-medium':
-                      switcher === 'at work',
-                    'border-[#5774CD]': switcher === 'active',
-                    'border-[#2D2F37]': switcher === 'offers',
-                    'border-[#B5CD57]': switcher === 'at work',
-                  }
-                )}
-                onClick={updateSwitcher('at work')}
-              >
-                В работе (4)
-              </button>
-            </li>
-            <li>
-              <button
-                className={cx(
-                  'transition duration-200 py-2 px-4 text-xs border-l border-r text-[#2D2F37]',
-                  {
-                    'bg-[#57CD63] border-[#57CD63] text-white font-medium':
-                      switcher === 'completed',
-                    'border-[#5774CD]': switcher === 'active',
-                    'border-[#B5CD57]': switcher === 'at work',
-                    'border-[#2D2F37]': switcher === 'offers',
-                  }
-                )}
-                onClick={updateSwitcher('completed')}
-              >
-                Выполненные (41)
-              </button>
-            </li>
-            <li>
-              <button
-                className={cx(
-                  'transition duration-200 py-2 px-4 text-xs text-[#2D2F37]',
-                  {
-                    'bg-[#2D2F37] text-white font-medium':
-                      switcher === 'offers',
-                  }
-                )}
-                onClick={updateSwitcher('offers')}
-              >
-                Предложения (4)
-              </button>
-            </li>
-          </ul>
+            <button
+              className={cx(
+                'transition duration-200 py-2 px-4 text-xs text-[#2D2F37]',
+                {
+                  'bg-[#5774CD] text-white font-medium': switcher === 'active',
+                }
+              )}
+              onClick={updateSwitcher('active')}
+            >
+              Активные (4)
+            </button>
+
+            <button
+              className={cx(
+                'transition duration-200 py-2 px-4 text-xs border-l text-[#2D2F37]',
+                {
+                  'bg-[#B5CD57] border-[#B5CD57] text-white font-medium':
+                    switcher === 'at work',
+                  'border-[#5774CD]': switcher === 'active',
+                  'border-[#2D2F37]': switcher === 'offers',
+                  'border-[#B5CD57]': switcher === 'at work',
+                }
+              )}
+              onClick={updateSwitcher('at work')}
+            >
+              В работе (4)
+            </button>
+
+            <button
+              className={cx(
+                'transition duration-200 py-2 px-4 text-xs border-l border-r text-[#2D2F37]',
+                {
+                  'bg-[#57CD63] border-[#57CD63] text-white font-medium':
+                    switcher === 'completed',
+                  'border-[#5774CD]': switcher === 'active',
+                  'border-[#B5CD57]': switcher === 'at work',
+                  'border-[#2D2F37]': switcher === 'offers',
+                }
+              )}
+              onClick={updateSwitcher('completed')}
+            >
+              Выполненные (41)
+            </button>
+
+            <button
+              className={cx(
+                'transition duration-200 py-2 px-4 text-xs text-[#2D2F37]',
+                {
+                  'bg-[#2D2F37] text-white font-medium': switcher === 'offers',
+                }
+              )}
+              onClick={updateSwitcher('offers')}
+            >
+              Предложения (4)
+            </button>
+          </div>
 
           <button
             onClick={() => setIsOpenCreateOrder(true)}
@@ -130,7 +125,7 @@ export default function Dashboard() {
                 </div>
               </Column>
             }
-            body={
+            content={
               <Row className='gap-y-5'>
                 <Column className='grid-cols-[1fr_0.5fr_0.5fr_0.5fr] bg-white px-5 py-4 rounded-xl items-center'>
                   <div>

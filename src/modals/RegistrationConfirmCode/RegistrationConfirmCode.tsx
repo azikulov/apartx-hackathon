@@ -1,31 +1,43 @@
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
+import axios from 'axios';
+
 import { Button } from '@/components/shared/Button';
 import { Modal } from '@/components/shared/Modal';
 import { Pin } from '@/components/shared/Pin';
-import type { RegistrationConfirmCodeProps } from './types';
-import axios from 'axios';
-import { useAuthenticationStore } from '@/store/useAuthenticationStore';
-import { useState } from 'react';
+import { useUserStore } from '@/store/useUserStore';
+import type { FormData, RegistrationConfirmCodeProps } from './types';
+import { API_URL } from '@/api';
 
 export function RegistrationConfirmCodeModal({
   onClose,
   onClickButton,
 }: RegistrationConfirmCodeProps) {
-  const { state } = useAuthenticationStore();
+  const { state } = useUserStore();
 
-  const [formData, setFormData] = useState<{
-    email: string | undefined;
-    code: number | undefined;
-  }>({ code: undefined, email: state.email });
+  const router = useRouter();
+
+  const [formData, setFormData] = useState<FormData>({
+    code: undefined,
+    email: state.email,
+  });
 
   async function handleSubmit() {
-    const API_URL = 'https://f037-217-196-25-57.ngrok-free.app/';
-
     try {
       const response = await axios.post(
         API_URL + 'confirm-register/',
         formData
       );
-      if (response.status === 201) onClickButton();
+
+      if (response.status === 201) {
+        localStorage.setItem('isAuth', 'true');
+        localStorage.setItem('token', JSON.stringify(response.data.token));
+
+        router.push('/choosing-role');
+
+        onClickButton();
+      }
     } catch (error) {
       console.log(error);
     }

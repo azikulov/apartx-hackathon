@@ -1,11 +1,42 @@
+'use client';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+
 import { Column } from '@/components/shared/Column';
+import { updateUserRole } from '@/api/userRole';
+import { refreshToken } from '@/api/token';
 import styles from './page.module.css';
 
 export default function ChoosingRoleScreen() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!localStorage.getItem('token') && !localStorage.getItem('isAuth')) {
+      return router.push('/');
+    }
+  }, [router]);
+
+  function handleUpdateUserRole(role: 'Customer' | 'Executor') {
+    const token = JSON.parse(localStorage.getItem('token') as string);
+
+    updateUserRole(token.access, role)
+      .then((response) => {
+        if (response?.status === 200) {
+          router.push('/dashboard');
+        }
+      })
+      .catch(() => {
+        refreshToken(token.refresh);
+      });
+  }
+
   return (
     <Column className='h-full gap-x-0'>
-      <button className={styles.card + ' rounded-r-[2rem]'}>
+      <button
+        onClick={() => handleUpdateUserRole('Executor')}
+        className={styles.card + ' rounded-r-[2rem]'}
+      >
         <div className='px-8 pt-8'>
           <Image
             src={require('@/assets/images/choosing-role/executor.png')}
@@ -19,7 +50,10 @@ export default function ChoosingRoleScreen() {
         </p>
       </button>
 
-      <button className={styles.card + ' rounded-l-[2rem]'}>
+      <button
+        onClick={() => handleUpdateUserRole('Customer')}
+        className={styles.card + ' rounded-l-[2rem]'}
+      >
         <div className='px-8 pt-8'>
           <Image
             src={require('@/assets/images/choosing-role/customer.png')}
