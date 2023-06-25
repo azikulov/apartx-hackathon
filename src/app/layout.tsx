@@ -8,7 +8,7 @@ import type { IChild } from '@/types';
 import './globals.css';
 import { useUserDataStore } from '@/store/useUserDataStore';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { refreshToken } from '@/api/token';
 
 const inter = Inter({ subsets: ['cyrillic', 'latin'] });
@@ -18,9 +18,10 @@ export default function RootLayout({ children }: IChild) {
   const { isAuth } = useAuthStore();
 
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!isAuth) return router.push('/');
+    if (!isAuth && pathname !== '/') return router.push('/');
 
     if (isAuth) {
       const token = JSON.parse(sessionStorage.getItem('token') as string);
@@ -33,7 +34,7 @@ export default function RootLayout({ children }: IChild) {
         updateUser(response?.data);
       });
     }
-  }, [updateUser, isAuth, router]);
+  }, [updateUser, isAuth, router, pathname]);
 
   return (
     <html lang='kk'>
