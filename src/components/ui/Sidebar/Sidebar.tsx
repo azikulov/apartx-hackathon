@@ -15,7 +15,7 @@ import { ConfirmExitModal } from '@/modals/ConfirmExit';
 import { useUserDataStore } from '@/store/useUserDataStore';
 import { updateUserRole } from '@/api/userRole';
 import { FilledUserSvg } from '@/assets/icons/FilledUserSvg';
-import { OutlineClipboardSvg } from '@/assets/icons/OutlineClipboardSvg';
+import { OutlineClipboardSvg } from '@/assets/icons/FilledClipboardSvg';
 import { ExecutorSvg } from '@/assets/icons/ExecutorSvg';
 import { FilledExecutorSvg } from '@/assets/icons/FilledExecutorSvg';
 
@@ -28,7 +28,10 @@ export function Sidebar() {
   const [isOpenConfirmExit, setIsOpenConfirmExit] = useState<boolean>(false);
 
   function handleSwitchRole(role: 'Executor' | 'Customer') {
-    const token = JSON.parse(localStorage.getItem('token') as string);
+    const token =
+      typeof window !== 'undefined'
+        ? JSON.parse(sessionStorage.getItem('token') as string)
+        : {};
 
     return () => {
       updateUserRole(token.access, role);
@@ -148,7 +151,7 @@ export function Sidebar() {
           onClose={() => setIsOpenConfirmExit(false)}
           onRejectButton={() => setIsOpenConfirmExit(false)}
           onAcceptButton={() => {
-            localStorage.removeItem('isAuth');
+            sessionStorage.removeItem('isAuth');
             setIsOpenConfirmExit(false);
             router.push('/');
           }}

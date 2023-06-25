@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/swc-darwin-x64": "^13.4.7",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "next": "13.4.7",

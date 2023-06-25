@@ -12,13 +12,13 @@ export default function ChoosingRoleScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!localStorage.getItem('token') && !localStorage.getItem('isAuth')) {
+    if (!sessionStorage.getItem('token') && !sessionStorage.getItem('isAuth')) {
       return router.push('/');
     }
   }, [router]);
 
   function handleUpdateUserRole(role: 'Customer' | 'Executor') {
-    const token = JSON.parse(localStorage.getItem('token') as string);
+    const token = JSON.parse(sessionStorage.getItem('token') as string);
 
     updateUserRole(token.access, role)
       .then((response) => {

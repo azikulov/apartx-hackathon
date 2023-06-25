@@ -33,6 +33,6 @@ export async function updateUserRole(
 
     return response;
   } catch (e) {
-    refreshToken(JSON.parse(localStorage.getItem('token') as string).refresh);
+    refreshToken(JSON.parse(sessionStorage.getItem('token') as string).refresh);
   }
 }
